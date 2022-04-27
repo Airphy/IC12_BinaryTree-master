@@ -31,17 +31,36 @@ public class BinaryTree<E extends Comparable<E>> {
 
         ///if the element is less than the current node's data, we go to the left child
         else if(element.compareTo(current.mData) < 0)
-           return addRecursive(current.mLeft, element);
+           current.mLeft = addRecursive(current.mLeft, element);
         //if the element is greater than the current node's data, we go to the right child
         else if(element.compareTo(current.mData) > 0)
-            return addRecursive(current.mRight, element);
-        else
+            current.mRight =  addRecursive(current.mRight, element);
+
+
              return current;
     }
 
     @Override
     public String toString() {
-        
+
+        StringBuilder sb = new StringBuilder("[");
+        inOrderTraverse(mRoot, sb);
+        //replace the last dangling comma with a closing bracket
+        sb.setCharAt(sb.length()-2, ']');
+        return sb.toString();
+    }
+
+    private void inOrderTraverse(Node current, StringBuilder sb)
+    {
+        // Hit a Null, stop
+        if(current == null)
+            return;
+        //1) Traverse Left recursively
+        inOrderTraverse(current.mLeft, sb);
+        //2) Visit Root (Append Root)
+        sb.append(current.mData).append(", ");
+        //3) Traverse Right
+        inOrderTraverse(current.mRight, sb);
     }
 
     private class Node<E extends Comparable<E>>
